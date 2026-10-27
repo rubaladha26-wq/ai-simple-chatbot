@@ -250,23 +250,37 @@ document.querySelector('#search').addEventListener('input', (e) => {
 }
 
 // ============================================================================
-// Start Server
+// Start Server with Automatic Port Conflict Fallback
 // ============================================================================
-app.listen(PORT, () => {
-  console.log(`====================================================`);
-  console.log(`🤖 AI Buddy Chatbot Server is running!`);
-  console.log(`🌐 Local URL: http://localhost:${PORT}`);
-  console.log(`🧠 Model:     ${OPENAI_MODEL}`);
-  console.log(
-    `🔑 API Key:   ${
-      isConfigured
-        ? 'Configured (Active)'
-        : 'Not Set (Interactive Demo / Fallback Active)'
-    }`
-  );
-  if (OPENAI_BASE_URL) {
-    console.log(`🔗 Base URL:  ${OPENAI_BASE_URL}`);
-  }
-  console.log(`====================================================`);
-});
+function startServer(portToUse) {
+  const server = app.listen(portToUse, () => {
+    console.log(`====================================================`);
+    console.log(`🤖 AI Buddy Chatbot Server is running!`);
+    console.log(`🌐 Local URL: http://localhost:${portToUse}`);
+    console.log(`🧠 Model:     ${OPENAI_MODEL}`);
+    console.log(
+      `🔑 API Key:   ${
+        isConfigured
+          ? 'Configured (Active)'
+          : 'Not Set (Interactive Demo / Fallback Active)'
+      }`
+    );
+    if (OPENAI_BASE_URL) {
+      console.log(`🔗 Base URL:  ${OPENAI_BASE_URL}`);
+    }
+    console.log(`====================================================`);
+  });
+
+  server.on('error', (err) => {
+    if (err.code === 'EADDRINUSE') {
+      const nextPort = Number(portToUse) + 1;
+      console.warn(`⚠️  Port ${portToUse} is already in use. Retrying on port ${nextPort}...`);
+      startServer(nextPort);
+    } else {
+      console.error('Server error:', err);
+    }
+  });
+}
+
+startServer(PORT);
 
