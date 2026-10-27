@@ -1,0 +1,307 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Buddy — Modern Simple AI Assistant</title>
+  <meta name="description" content="AI Buddy is a clean, modern, and simple AI chatbot designed for intuitive, seamless conversations.">
+  <link rel="stylesheet" href="style.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+</head>
+<body>
+  <!-- App Container -->
+  <div class="app-layout">
+
+    <!-- Mobile Sidebar Backdrop Overlay -->
+    <div class="sidebar-backdrop" id="sidebarBackdrop" aria-hidden="true"></div>
+
+    <!-- Left Sidebar -->
+    <aside class="sidebar" id="sidebar" aria-label="Application Sidebar">
+      <!-- Sidebar Header / Brand -->
+      <div class="sidebar-header">
+        <div class="brand">
+          <div class="brand-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/>
+              <circle cx="9" cy="10" r="1" fill="currentColor"/>
+              <circle cx="15" cy="10" r="1" fill="currentColor"/>
+            </svg>
+          </div>
+          <div class="brand-text">
+            <h1 class="brand-title">AI Buddy</h1>
+            <span class="brand-badge">Assistant</span>
+          </div>
+        </div>
+        <button class="icon-btn mobile-close-btn" id="closeSidebarBtn" aria-label="Close sidebar">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+
+      <!-- New Chat Button -->
+      <div class="sidebar-action">
+        <button class="new-chat-btn" id="newChatBtn" aria-label="Start new conversation">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          <span>New Chat</span>
+          <span class="kbd-shortcut">Ctrl+K</span>
+        </button>
+      </div>
+
+      <!-- Recent Conversations Section -->
+      <div class="sidebar-section">
+        <div class="section-label-row">
+          <span class="section-label">Recent Conversations</span>
+          <button class="clear-history-btn" id="clearHistoryBtn" title="Clear saved history" aria-label="Clear chat history">
+            Clear
+          </button>
+        </div>
+        <nav class="recent-list" id="recentList" aria-label="Recent chats list">
+          <!-- Dynamically populated or fallback items -->
+          <div class="empty-recent" id="emptyRecentText">No past chats yet. Start talking to AI Buddy!</div>
+        </nav>
+      </div>
+
+      <!-- Sidebar Footer -->
+      <div class="sidebar-footer">
+        <!-- Settings Button -->
+        <button class="footer-btn" id="settingsBtn" aria-label="Open settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="3"></circle>
+            <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
+          </svg>
+          <span>Settings</span>
+        </button>
+
+        <!-- User Profile -->
+        <div class="user-profile">
+          <div class="user-avatar" aria-hidden="true">
+            <span>U</span>
+            <span class="status-dot" title="Online"></span>
+          </div>
+          <div class="user-info">
+            <span class="user-name">Guest User</span>
+            <span class="user-status">Active Session</span>
+          </div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Chat Area -->
+    <main class="main-content" id="mainContent">
+
+      <!-- Top Header Bar -->
+      <header class="chat-header">
+        <div class="header-left">
+          <button class="icon-btn mobile-menu-btn" id="openSidebarBtn" aria-label="Open sidebar navigation">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <line x1="3" y1="12" x2="21" y2="12"></line>
+              <line x1="3" y1="6" x2="21" y2="6"></line>
+              <line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+          </button>
+          <div class="chat-header-title">
+            <h2>AI Buddy</h2>
+            <span class="model-tag" id="currentModelTag">
+              <span class="pulse-dot"></span>
+              <span id="modelNameDisplay">gpt-4o-mini</span>
+            </span>
+          </div>
+        </div>
+        <div class="header-actions">
+          <button class="header-action-btn" id="clearChatBtn" title="Clear current conversation" aria-label="Clear chat">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="3 6 5 6 21 6"></polyline>
+              <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+            </svg>
+            <span>Reset</span>
+          </button>
+        </div>
+      </header>
+
+      <!-- Chat Scrollable Body -->
+      <div class="chat-scroll-container" id="chatScrollContainer">
+
+        <!-- Welcome Screen (Visible on empty chat) -->
+        <section class="welcome-section" id="welcomeSection" aria-label="Welcome screen">
+          <div class="welcome-badge">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+            </svg>
+            <span>Smart AI Assistant</span>
+          </div>
+          <h2 class="welcome-heading">Hello! How can I help you today?</h2>
+          <p class="welcome-subtitle">Ask anything. Let's explore ideas together.</p>
+
+          <!-- 4 Suggestion Cards -->
+          <div class="suggestion-cards-grid" role="region" aria-label="Suggested prompts">
+            
+            <button class="suggestion-card" data-prompt="Explain quantum computing in simple terms for a beginner.">
+              <div class="card-icon-wrapper card-indigo">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"></circle>
+                  <line x1="12" y1="16" x2="12" y2="12"></line>
+                  <line x1="12" y1="8" x2="12.01" y2="8"></line>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Explain a concept</h3>
+                <p class="card-desc">"Explain quantum computing in simple terms"</p>
+              </div>
+              <span class="card-arrow">&rarr;</span>
+            </button>
+
+            <button class="suggestion-card" data-prompt="Write a clean JavaScript function to debounce rapid user inputs with an example.">
+              <div class="card-icon-wrapper card-purple">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="16 18 22 12 16 6"></polyline>
+                  <polyline points="8 6 2 12 8 18"></polyline>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Write some code</h3>
+                <p class="card-desc">"Write a JavaScript debounce function"</p>
+              </div>
+              <span class="card-arrow">&rarr;</span>
+            </button>
+
+            <button class="suggestion-card" data-prompt="Help me learn something new: How does photosynthesis work step by step?">
+              <div class="card-icon-wrapper card-emerald">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"></path>
+                  <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"></path>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Help me learn something new</h3>
+                <p class="card-desc">"How photosynthesis works step by step"</p>
+              </div>
+              <span class="card-arrow">&rarr;</span>
+            </button>
+
+            <button class="suggestion-card" data-prompt="Generate 5 creative and catchy brand names for an eco-friendly specialty coffee shop.">
+              <div class="card-icon-wrapper card-amber">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 1 1 7.072 0l-.548.547A3.374 3.374 0 0 0 14 18.469V19a2 2 0 1 1-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+              </div>
+              <div class="card-content">
+                <h3 class="card-title">Generate creative ideas</h3>
+                <p class="card-desc">"Catchy names for an eco-friendly coffee shop"</p>
+              </div>
+              <span class="card-arrow">&rarr;</span>
+            </button>
+
+          </div>
+        </section>
+
+        <!-- Messages Container -->
+        <div class="messages-container" id="messagesContainer" role="log" aria-live="polite">
+          <!-- Chat messages dynamically rendered here -->
+        </div>
+
+        <!-- Typing Indicator Element -->
+        <div class="typing-indicator-wrapper" id="typingIndicator" style="display: none;">
+          <div class="message-row ai-row">
+            <div class="avatar ai-avatar">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2a8 8 0 0 0-8 8v12l3-3 2.5 2.5L12 19l2.5 2.5L17 19l3 3V10a8 8 0 0 0-8-8z"/>
+              </svg>
+            </div>
+            <div class="typing-bubble">
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-dot"></span>
+              <span class="typing-text">AI Buddy is thinking...</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Bottom Chat Input Section -->
+      <footer class="chat-input-wrapper">
+        <form class="input-form-container" id="chatForm">
+          <div class="input-box-wrapper">
+            <textarea
+              id="messageInput"
+              rows="1"
+              placeholder="Message AI Buddy..."
+              aria-label="Message input"
+              autocomplete="off"
+            ></textarea>
+            <button
+              type="submit"
+              id="sendBtn"
+              class="send-btn"
+              disabled
+              aria-label="Send message"
+            >
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <line x1="22" y1="2" x2="11" y2="13"></line>
+                <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+              </svg>
+            </button>
+          </div>
+        </form>
+        <p class="chat-disclaimer">AI responses may not always be accurate. Verify important information.</p>
+      </footer>
+
+    </main>
+
+  </div>
+
+  <!-- Settings Modal -->
+  <div class="modal-overlay" id="settingsModal" style="display: none;" aria-hidden="true">
+    <div class="modal-card" role="dialog" aria-labelledby="settingsTitle" aria-modal="true">
+      <div class="modal-header">
+        <h3 id="settingsTitle">AI Buddy Settings</h3>
+        <button class="icon-btn" id="closeSettingsBtn" aria-label="Close settings">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+          </svg>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="setting-item">
+          <div class="setting-info">
+            <label class="setting-label">Active AI Engine</label>
+            <span class="setting-desc">Configured in your backend <code>.env</code> file.</span>
+          </div>
+          <span class="setting-badge" id="settingsModelBadge">gpt-4o-mini</span>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label class="setting-label">Local Ollama Fallback</label>
+            <span class="setting-desc">Supports local models via <code>http://localhost:11434/v1</code>.</span>
+          </div>
+          <span class="setting-badge ready">Supported</span>
+        </div>
+        <div class="setting-item">
+          <div class="setting-info">
+            <label class="setting-label">Clear Browser History</label>
+            <span class="setting-desc">Removes all locally cached chat history and sessions.</span>
+          </div>
+          <button class="danger-btn" id="modalClearHistoryBtn">Clear Cache</button>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="secondary-btn" id="closeSettingsFooterBtn">Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Container -->
+  <div class="toast" id="toast" role="alert" aria-live="assertive"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
+
